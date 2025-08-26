@@ -189,7 +189,7 @@ const Signup = () => {
           <div className="bg-gray-50 px-8 py-6 border-t border-gray-100">
             <p className="text-center text-sm text-gray-600">
               Already have an account?{' '}
-              <a href="#" className="font-medium text-purple-600 hover:text-purple-500 transition duration-200">
+              <a href="/signin" className="font-medium text-purple-600 hover:text-purple-500 transition duration-200">
                 Sign in
               </a>
             </p>
