@@ -43,8 +43,8 @@ const Welcome = () => {
               <a href="#" className="text-gray-600 hover:text-indigo-500 font-medium transition-colors">Pricing</a>
               <a href="#" className="text-gray-600 hover:text-indigo-500 font-medium transition-colors">About</a>
             </div>
-            <Link to="/signup"><button className="bg-indigo-500 text-white px-5 py-2 rounded-lg font-semibold hover:bg-indigo-600 transition-colors">
-              Get Started
+            <Link to="/signin"><button className="bg-indigo-500 text-white px-5 py-2 rounded-lg font-semibold hover:bg-indigo-600 transition-colors">
+              Signin
             </button></Link>
           </nav>
         </div>

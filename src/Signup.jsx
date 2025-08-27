@@ -1,4 +1,4 @@
-import React from 'react'
+import {useState} from 'react'
 import { useFormik } from 'formik'
 import * as Yup from "yup"
 import axios from 'axios'
@@ -6,8 +6,10 @@ import { useNavigate } from 'react-router-dom'
 
 const Signup = () => {
 
-  // const url = "http://localhost:7777/signup"
-    const url = "https://task-manager-l5bz.onrender.com/signup"
+  // const [isloading, setIsLoading] = useState(false)
+  const [error, setError] = useState('')
+  const url = "http://localhost:7777/signup"
+    // const url = "https://task-manager-l5bz.onrender.com/signup"
 
   const navigate = useNavigate()
 
@@ -25,14 +27,27 @@ const Signup = () => {
       confirmPassword: Yup.string().oneOf([Yup.ref("password"), null],"Password must match").required("Confirm your password")
     }),
 
-    onSubmit:(values)=>{
+    onSubmit:(values, { setSubmitting })=>{
       console.log(values);
+      setError(''); // Clear previous errors
       axios.post(url, values)
       .then((response)=>{
         console.log(response.data);
         if(response.status === 201){
           navigate("/signin")
+        }else{
+          setError(response.data.message)
         }
+      })
+      .catch((err)=>{
+        if (err.response && err.response.data && err.response.data.message){
+          setError(err.response.data.message)
+        } else {
+          setError('An error occurred. Please try again.')
+        }
+      })
+      .finally(() => {
+        setSubmitting(false); // Always stop the loader
       })
     }
     
@@ -62,6 +77,13 @@ const Signup = () => {
         {/* Signup Card */}
         <div className="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100">
           <div className="p-8">
+            {/* Error Message */}
+            {error && (
+              <div className="mb-6 bg-red-50 border-l-4 border-red-500 p-3 rounded">
+                <p className="text-sm text-red-700">{error}</p>
+              </div>
+            )}
+            
             <div className="space-y-6">
               {/* Name Input */}
               <div>
@@ -178,11 +200,26 @@ const Signup = () => {
               {/* Signup Button */}
               <div>
                 <button
-                  type="submit"
-                  className="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition duration-200 transform hover:-translate-y-0.5"
-                >
-                  Create Account
-                </button>
+                type="submit"
+                disabled={formik.isSubmitting}
+                className="group relative w-full flex justify-center items-center py-3 px-4 border border-transparent rounded-lg text-sm font-medium text-white bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 disabled:opacity-50 disabled:cursor-not-allowed transition duration-200 ease-in-out transform hover:scale-[1.02] hover:shadow-lg active:scale-[0.98]"
+              >
+                <span className="font-semibold tracking-wide">
+                  {formik.isSubmitting ? 'Creating Account...' : 'Create Account'}
+                </span>
+                <span className="ml-2 flex items-center">
+                  {formik.isSubmitting ? (
+                    <svg className="animate-spin h-5 w-5 text-white/80" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
+                    </svg>
+                  ) : (
+                    <svg className="h-5 w-5 text-white/80 group-hover:text-white transition-colors duration-200" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
+                    </svg>
+                  )}
+                </span>
+              </button>
               </div>
             </div>                      
           </div>
