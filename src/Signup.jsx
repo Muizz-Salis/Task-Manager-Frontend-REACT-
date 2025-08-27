@@ -6,7 +6,9 @@ import { useNavigate } from 'react-router-dom'
 
 const Signup = () => {
 
-  const url = "http://localhost:7777/signup"
+  // const url = "http://localhost:7777/signup"
+    const url = "https://task-manager-l5bz.onrender.com/signup"
+
   const navigate = useNavigate()
 
   const formik = useFormik({
