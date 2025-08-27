@@ -8,8 +8,8 @@ const Signup = () => {
 
   // const [isloading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
-  const url = "http://localhost:7777/signup"
-    // const url = "https://task-manager-l5bz.onrender.com/signup"
+  // const url = "http://localhost:7777/signup"
+    const url = "https://task-manager-l5bz.onrender.com/signup"
 
   const navigate = useNavigate()
 
